@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>jquery animation</title>
+		<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<style>
+			.anima {
+				position: relative;
+				width: 100px;
+				height: 15px;
+				background-color: skyblue;
+			}
+		</style>
+		<script>
+			$(function() {
+				init(15);
+				$("#btnPlay").click(() => anima(0, 350)); // 播放动画
+				$("#btnAdd").click(addDiv);
+				$("#btnDel").click(deleteDiv);
+			});
+			// 初始化
+			function init(num) {
+				for(let i = 0; i < num; i++) {
+					addDiv();
+				}
+			}
+			// 增加div
+			function addDiv() {
+				let div = $("<div class='anima'></div>");
+				$(".box").append(div);
+			}
+			// 减少div
+			function deleteDiv() {
+				$(".anima:last-child").remove();
+			}
+			// 动画
+			function anima(i, speed) {
+				let div = $(".anima:eq(" + i + ")");
+				if(i < $(".anima").length) {
+					div.animate({marginBottom: "+=5px"}, speed, () => anima(i + 1, speed)) // 递归
+						.animate({
+							left: "+=200px",
+							width: "+=150px",
+							height: "+=50px"
+						}, speed * 2)
+						.animate({
+							left: "-=200px",
+							width: "-=150px",
+							height: "-=50px"
+						}, speed * 2)
+						.animate({
+							marginBottom: "-=5px"
+						}, speed);
+				}
+			}
+		</script>
+	</head>
+
+	<body>
+		<button id="btnPlay">播放动画</button>
+		<button id="btnAdd">+</button>
+		<button id="btnDel">-</button>
+		<div class="box"></div>
+	</body>
+
+</html>
